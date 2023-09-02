@@ -19,7 +19,7 @@ namespace UIURescueSquad.Roles
 
         public override List<string> Inventory { get; set; } = new()
         {
-            $"{ItemType.KeycardNTFLieutenant}",
+            $"{ItemType.KeycardMTFOperative}",
             $"{ItemType.GunCrossvec}",
             $"{ItemType.GunCOM18}",
             $"{ItemType.Medkit}",
