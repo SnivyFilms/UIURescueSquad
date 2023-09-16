@@ -10,123 +10,122 @@ using System.Collections.Generic;
 
 namespace UIURescueSquad
 {
-    internal sealed class EventHandlers
-    {
+     internal sealed class EventHandlers
+     {
+          private int Respawns = 0;
+          private int UIURespawns = 0;
+          private CoroutineHandle calcuationCoroutine;
 
-        private UIURescueSquad plugin;
-        public EventHandlers(UIURescueSquad plugin) => this.plugin = plugin;
+          public void OnRoundStarted()
+          {
+               UIURescueSquad.Instance.IsSpawnable = false;
+               UIURescueSquad.Instance.NextIsForced = false;
+               Respawns = 0;
+               UIURespawns = 0;
 
-        private int Respawns = 0;
-        private int UIURespawns = 0;
-        private CoroutineHandle calcuationCoroutine;
+               if (calcuationCoroutine.IsRunning)
+                    Timing.KillCoroutines(calcuationCoroutine);
 
-        public void OnRoundStarted()
-        {
-            plugin.IsSpawnable = false;
-            Respawns = 0;
-            UIURespawns = 0;
+               calcuationCoroutine = Timing.RunCoroutine(spawnCalculation());
+          }
 
-            if (calcuationCoroutine.IsRunning)
-                Timing.KillCoroutines(calcuationCoroutine);
+          private IEnumerator<float> spawnCalculation()
+          {
+               while (true)
+               {
+                    yield return Timing.WaitForSeconds(1f);
 
-            calcuationCoroutine = Timing.RunCoroutine(spawnCalculation());
-        }
+                    if (Round.IsEnded)
+                         break;
 
-        private IEnumerator<float> spawnCalculation()
-        {
-            while (true)
-            {
-                yield return Timing.WaitForSeconds(1f);
+                    if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation)
+                         continue;
 
-                if (Round.IsEnded)
-                    break;
+                    if (Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox)
+                         UIURescueSquad.Instance.IsSpawnable = (Loader.Random.Next(100) <= UIURescueSquad.Instance.Config.SpawnManager.Probability &&
+                             Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
+                             UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns) || UIURescueSquad.Instance.NextIsForced;
+               }
+          }
 
-                if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != plugin.Config.SpawnWaveCalculation)
-                    continue;
+          public void OnRespawningTeam(RespawningTeamEventArgs ev)
+          {
+               if (UIURescueSquad.Instance.IsSpawnable || UIURescueSquad.Instance.NextIsForced)
+               {
+                    List<Player> players = new List<Player>();
+                    if (ev.Players.Count > UIURescueSquad.Instance.Config.SpawnManager.MaxSquad)
+                         players = ev.Players.GetRange(0, UIURescueSquad.Instance.Config.SpawnManager.MaxSquad);
+                    else
+                         players = ev.Players.GetRange(0, ev.Players.Count);
 
-                if (Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox)
-                    plugin.IsSpawnable = Loader.Random.Next(100) <= plugin.Config.SpawnManager.Probability &&
-                        Respawns >= plugin.Config.SpawnManager.Respawns &&
-                        UIURespawns < plugin.Config.SpawnManager.MaxSpawns;
-            }
-        }
-
-        public void OnRespawningTeam(RespawningTeamEventArgs ev)
-        {
-            if(plugin.IsSpawnable)
-            {
-                List<Player> players = new List<Player>();
-                if (ev.Players.Count > plugin.Config.SpawnManager.MaxSquad)
-                    players = ev.Players.GetRange(0, plugin.Config.SpawnManager.MaxSquad);
-                else
-                    players = ev.Players.GetRange(0, ev.Players.Count);
-
-                Queue<RoleTypeId> queue = ev.SpawnQueue;
-                foreach (RoleTypeId role in queue)
-                {
-                    if (players.Count <= 0)
-                        break;
-                    Player player = players.RandomItem();
-                    players.Remove(player);
-                    switch (role)
+                    Queue<RoleTypeId> queue = ev.SpawnQueue;
+                    foreach (RoleTypeId role in queue)
                     {
-                        case RoleTypeId.NtfCaptain:
-                            plugin.Config.UiuLeader.AddRole(player);
-                            break;
-                        case RoleTypeId.NtfSergeant:
-                            plugin.Config.UiuAgent.AddRole(player);
-                            break;
-                        case RoleTypeId.NtfPrivate:
-                            plugin.Config.UiuSoldier.AddRole(player);
-                            break;
+                         if (players.Count <= 0)
+                              break;
+                         Player player = players.RandomItem();
+                         players.Remove(player);
+                         switch (role)
+                         {
+                              case RoleTypeId.NtfCaptain:
+                                   UIURescueSquad.Instance.Config.UiuLeader.AddRole(player);
+                                   break;
+                              case RoleTypeId.NtfSergeant:
+                                   UIURescueSquad.Instance.Config.UiuAgent.AddRole(player);
+                                   break;
+                              case RoleTypeId.NtfPrivate:
+                                   UIURescueSquad.Instance.Config.UiuSoldier.AddRole(player);
+                                   break;
+                         }
                     }
-                }
-                UIURespawns++;
-                ev.NextKnownTeam = SpawnableTeamType.None;
-            }
-            Respawns++;
-        }
+                    UIURespawns++;
+                    
+                    ev.NextKnownTeam = SpawnableTeamType.None;
+               }
+               Respawns++;
+          }
 
-        public void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
-        {
-            string cassieMessage = string.Empty;
-            if (!plugin.IsSpawnable)
-            {
-                if (ev.ScpsLeft == 0 && !string.IsNullOrEmpty(plugin.Config.SpawnManager.NtfAnnouncmentCassieNoScp))
-                {
-                    ev.IsAllowed = false;
-                    cassieMessage = plugin.Config.SpawnManager.NtfAnnouncmentCassieNoScp;
-                }
-                else if (ev.ScpsLeft >= 1 && !string.IsNullOrEmpty(plugin.Config.SpawnManager.NtfAnnouncementCassie))
-                {
-                    ev.IsAllowed = false;
-                    cassieMessage = plugin.Config.SpawnManager.NtfAnnouncementCassie;
-                }
-            }
-            else
-            {
-                if (ev.ScpsLeft == 0 && !string.IsNullOrEmpty(plugin.Config.SpawnManager.UiuAnnouncmentCassieNoScp))
-                {
-                    ev.IsAllowed = false;
-                    cassieMessage = plugin.Config.SpawnManager.UiuAnnouncmentCassieNoScp;
-                }
-                else if (ev.ScpsLeft >= 1 && !string.IsNullOrEmpty(plugin.Config.SpawnManager.UiuAnnouncementCassie))
-                {
-                    ev.IsAllowed = false;
-                    cassieMessage = plugin.Config.SpawnManager.UiuAnnouncementCassie;
-                }
-                plugin.IsSpawnable = false;
-            }
+          public void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
+          {
+               string cassieMessage = string.Empty;
+               if (UIURescueSquad.Instance.IsSpawnable || UIURescueSquad.Instance.NextIsForced)
+               {
+                    if (ev.ScpsLeft == 0 && !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager.UiuAnnouncmentCassieNoScp))
+                    {
+                         ev.IsAllowed = false;
+                         cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.UiuAnnouncmentCassieNoScp;
+                    }
+                    else if (ev.ScpsLeft >= 1 && !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager.UiuAnnouncementCassie))
+                    {
+                         ev.IsAllowed = false;
+                         cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.UiuAnnouncementCassie;
+                    }
+                    UIURescueSquad.Instance.NextIsForced = false;
+                    UIURescueSquad.Instance.IsSpawnable = false;
+               }
+               else
+               {
+                    if (ev.ScpsLeft == 0 && !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncmentCassieNoScp))
+                    {
+                         ev.IsAllowed = false;
+                         cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncmentCassieNoScp;
+                    }
+                    else if (ev.ScpsLeft >= 1 && !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncementCassie))
+                    {
+                         ev.IsAllowed = false;
+                         cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncementCassie;
+                    }
+               }
 
-            cassieMessage = cassieMessage.Replace("{scpnum}", $"{ev.ScpsLeft} scpsubject");
+               cassieMessage = cassieMessage.Replace("{scpnum}", $"{ev.ScpsLeft} scpsubject");
 
-            if (ev.ScpsLeft > 1)
-                cassieMessage = cassieMessage.Replace("scpsubject", "scpsubjects");
+               if (ev.ScpsLeft > 1)
+                    cassieMessage = cassieMessage.Replace("scpsubject", "scpsubjects");
 
-            cassieMessage = cassieMessage.Replace("{designation}", $"nato_{ev.UnitName[0]} {ev.UnitNumber}");
+               cassieMessage = cassieMessage.Replace("{designation}", $"nato_{ev.UnitName[0]} {ev.UnitNumber}");
 
-            if (!string.IsNullOrEmpty(cassieMessage))
-                Cassie.Message(cassieMessage, isSubtitles: plugin.Config.SpawnManager.Subtitles);
-        }
-    }
+               if (!string.IsNullOrEmpty(cassieMessage))
+                    Cassie.Message(cassieMessage, isSubtitles: UIURescueSquad.Instance.Config.SpawnManager.Subtitles);
+          }
+     }
 }

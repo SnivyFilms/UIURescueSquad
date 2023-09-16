@@ -8,44 +8,49 @@ using ServerEvent = Exiled.Events.Handlers.Server;
 
 namespace UIURescueSquad
 {
-    public class UIURescueSquad : Plugin<Configs.Config>
-    {
+     public class UIURescueSquad : Plugin<Configs.Config>
+     {
 
-        public override string Name { get; } = "UIURescueSquad";
-        public override string Author { get; } = "JesusQC, Michal78900, maintained by Marco15453. Updated to Exiled 8 by Vicious Vikki";
-        public override string Prefix { get; } = "UIURescueSquad";
-        public override Version Version { get; } = new Version(5, 3, 0);
-        public override Version RequiredExiledVersion => new Version(8, 1, 0);
+          public override string Name { get; } = "UIURescueSquad";
+          public override string Author { get; } = "JesusQC, Michal78900, Marco15453, Vicious Vikki, misfiy";
+          public override string Prefix { get; } = "UIURescueSquad";
+          public override Version Version { get; } = new Version(5, 3, 0);
+          public override Version RequiredExiledVersion => new Version(8, 1, 0);
+          
+          public static UIURescueSquad Instance;
 
-        public bool IsSpawnable = false;
+          public bool IsSpawnable = false;
+          public bool NextIsForced = false;
 
-        private EventHandlers eventHandlers;
+          private EventHandlers eventHandlers;
 
-        public override void OnEnabled()
-        {
-            Config.UiuSoldier.Register();
-            Config.UiuAgent.Register();
-            Config.UiuLeader.Register();
+          public override void OnEnabled()
+          {
+               Instance = this;
+               Config.UiuSoldier.Register();
+               Config.UiuAgent.Register();
+               Config.UiuLeader.Register();
 
-            eventHandlers = new EventHandlers(this);
+               eventHandlers = new();
 
-            ServerEvent.RoundStarted += eventHandlers.OnRoundStarted;
-            ServerEvent.RespawningTeam += eventHandlers.OnRespawningTeam;
-            MapEvent.AnnouncingNtfEntrance += eventHandlers.OnAnnouncingNtfEntrance;
+               ServerEvent.RoundStarted += eventHandlers.OnRoundStarted;
+               ServerEvent.RespawningTeam += eventHandlers.OnRespawningTeam;
+               MapEvent.AnnouncingNtfEntrance += eventHandlers.OnAnnouncingNtfEntrance;
 
-            base.OnEnabled();
-        }
+               base.OnEnabled();
+          }
 
-        public override void OnDisabled()
-        {
-            CustomRole.UnregisterRoles();
+          public override void OnDisabled()
+          {
+               CustomRole.UnregisterRoles();
 
-            ServerEvent.RoundStarted -= eventHandlers.OnRoundStarted;
-            ServerEvent.RespawningTeam -= eventHandlers.OnRespawningTeam;
-            MapEvent.AnnouncingNtfEntrance -= eventHandlers.OnAnnouncingNtfEntrance;
+               ServerEvent.RoundStarted -= eventHandlers.OnRoundStarted;
+               ServerEvent.RespawningTeam -= eventHandlers.OnRespawningTeam;
+               MapEvent.AnnouncingNtfEntrance -= eventHandlers.OnAnnouncingNtfEntrance;
 
-            eventHandlers = null;
-            base.OnDisabled();
-        }
-    }
+               eventHandlers = null;
+               Instance = null!;
+               base.OnDisabled();
+          }
+     }
 }
