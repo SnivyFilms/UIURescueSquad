@@ -29,12 +29,6 @@ namespace UIURescueSquad.Roles
             $"{ItemType.ArmorCombat}"
         };
 
-        public override Dictionary<AmmoType, ushort> Ammo { get; set; } = new()
-        {
-            { AmmoType.Nato556, 80 },
-            { AmmoType.Nato9, 100 },
-        };
-
         public override SpawnProperties SpawnProperties { get; set; } = new()
         {
             RoleSpawnPoints = new List<RoleSpawnPoint>
@@ -45,6 +39,11 @@ namespace UIURescueSquad.Roles
                     Chance = 100
                 }
             }
+        };
+        public override Dictionary<AmmoType, ushort> Ammo { get; set; } = new()
+        {
+            { AmmoType.Nato556, 80 },
+            { AmmoType.Nato9, 100 },
         };
     }
 }
