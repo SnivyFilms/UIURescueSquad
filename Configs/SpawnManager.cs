@@ -22,10 +22,23 @@ namespace UIURescueSquad.Configs
         public string UiuAnnouncmentCassieNoScp { get; private set; } = "The U I U Squad designated {designation} HasEntered AllRemaining NoSCPsLeft";
 
         [Description("NTF entrance Cassie Message (leave empty to use default NTF cassie entrance)")]
-        public string NtfAnnouncementCassie { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining AwaitingRecontainment {scpnum}";
-        public string NtfAnnouncmentCassieNoScp { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining NoSCPsLeft";
+        public string NtfAnnouncementCassie { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AwaitingRecontainment {scpnum}";
+        public string NtfAnnouncmentCassieNoScp { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered NoSCPsLeft";
 
         [Description("Cassie Subtitles")]
-        public bool Subtitles { get; private set; } = false;
+        public bool Subtitles { get; private set; } = true;
+
+        [Description("Cassie Text MTF SCPs")]
+        public string CassieTextMtfSCPs { get; private set; } = "Mobile Task Force Unit Espilon 11, designated {designation} has entered the facility. All remaining personnel are advised to proceed with standard evaction protocols until a MTF squad reaches your destination. awaiting recontainment of {scpnum}.";
+
+        [Description("Cassie Text MTF No SCPs")]
+        public string CassieTextMtfNoSCPs { get; private set; } = "Mobile Task Force Unit Espilon 11, designated {designation} has entered the facility. All remaining personnel are advised to proceed with standard evaction protocols until a MTF squad reaches your destination. Substantial threat remains within the facility - exercise caution.";
+
+        [Description("Cassie Text UIU SCPs")]
+        public string CassieTextUiuSCPs { get; private set; } = "The UIU Squad, designated {designation} has entered the facility. Awaiting recontainment of {scpnum}";
+
+        [Description("Cassie Text UIU No SCPs")]
+        public string CassieTextUiuNoSCPs { get; private set; } = "The UIU Squad, designated {designation} has entered the facility. Substantial threat remains within the facility - exercise caution.";
+
     }
 }
