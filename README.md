@@ -14,8 +14,8 @@ Place the `UIURescueSquad.dll` file in your EXILED/Plugins folder.
 
 * Class has a configrable percent chance to spawn instead of NTF
 * A configurable spawn location
-* Commands to spawn individual members and a squad manually
-* Announcements for a squad of UIU spawning, as well as two for ntf spawning to let the players know which one spawned
+* Commands to spawn individual members and a squad manually (individual members needs the give custom role permission, and a squad needs the RoundEvents permission)
+* Announcements for a squad of UIU spawning, as well for ntf spawning to let the players know which one spawned
 * Compatible with [Misfiy's Version of RespawnTimer](https://github.com/Misfiy/RespawnTimer)!
 
 # Configs
