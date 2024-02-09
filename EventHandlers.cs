@@ -14,7 +14,7 @@ namespace UIURescueSquad
      {
           private int Respawns = 0;
           private int UIURespawns = 0;
-          private CoroutineHandle calcuationCoroutine;
+        private CoroutineHandle calcuationCoroutine;
 
           public void OnRoundStarted()
           {
