@@ -131,10 +131,53 @@ namespace UIURescueSquad
                 cassieText = cassieText.Replace("SCP subject", "SCP subjects");
             }
                cassieMessage = cassieMessage.Replace("{designation}", $"nato_{ev.UnitName[0]} {ev.UnitNumber}");
-               cassieText = cassieText.Replace("{designation}", $"nato_{ev.UnitName[0]} {ev.UnitNumber}");
+               cassieText = cassieText.Replace("{designation}", GetNatoName(ev.UnitName) + " " + ev.UnitNumber);
 
                if (!string.IsNullOrEmpty(cassieMessage))
                     Cassie.MessageTranslated(cassieMessage, cassieText, isSubtitles: UIURescueSquad.Instance.Config.SpawnManager.Subtitles);
           }
-     }
+        public string GetNatoName(string unitName)
+        {
+            Dictionary<string, string> natoAlphabet = new Dictionary<string, string>()
+            {
+                {"a", "ALPHA"},
+                {"b", "BRAVO"},
+                {"c", "CHARLIE"},
+                {"d", "DELTA"},
+                {"e", "ECHO"},
+                {"f", "FOXTROT"},
+                {"g", "GOLF"},
+                {"h", "HOTEL"},
+                {"i", "INDIA"},
+                {"j", "JULIET"},
+                {"k", "KILO"},
+                {"l", "LIMA"},
+                {"m", "MIKE"},
+                {"n", "NOVEMBER"},
+                {"o", "OSCAR"},
+                {"p", "PAPA"},
+                {"q", "QUEBEC"},
+                {"r", "ROMEO"},
+                {"s", "SIERRA"},
+                {"t", "TANGO"},
+                {"u", "UNIFORM"},
+                {"v", "VICTOR"},
+                {"w", "WHISKEY"},
+                {"x", "XRAY"},
+                {"y", "YANKEE"},
+                {"z", "ZULU" },
+            };
+
+            string firstLetter = unitName[0].ToString().ToLower();
+
+            if (natoAlphabet.ContainsKey(firstLetter))
+            {
+                return natoAlphabet[firstLetter];
+            }
+            else
+            {
+                return $"nato_{firstLetter}";
+            }
+        }
+    }
 }

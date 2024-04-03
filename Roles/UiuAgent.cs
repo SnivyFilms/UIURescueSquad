@@ -16,6 +16,7 @@ namespace UIURescueSquad.Roles
         public override string Name { get; set; } = "UIU Agent";
         public override string Description { get; set; } = "Help MTFs to finish their job";
         public override string CustomInfo { get; set; } = "UIU Agent";
+        public override bool IgnoreSpawnSystem { get; set; } = true;
 
         public override List<string> Inventory { get; set; } = new()
         {
