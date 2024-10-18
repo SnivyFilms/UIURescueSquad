@@ -1,10 +1,12 @@
 # UIU Rescue Squad
 
+![Downloads](https://img.shields.io/github/downloads/SnivyFilms/UIURescueSquad/total.svg)
+
 A plugin that adds a new class to your server named "UIU Rescue Squad". Their job is helpping the NTF completing their task. They have a chance to spawn instead of a squad of NTF.
 
 # Installation
 
-**[EXILED](https://github.com/Exiled-Team/EXILED) must be installed for this to work.**
+**[EXILED](https://github.com/Exmod-Team/EXILED) must be installed for this to work.**
 
 **CustomRoles need to be enabled on your server for this to work.**
 
