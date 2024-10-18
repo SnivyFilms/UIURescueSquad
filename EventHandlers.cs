@@ -125,11 +125,11 @@ namespace UIURescueSquad
                cassieMessage = cassieMessage.Replace("{scpnum}", $"{ev.ScpsLeft} scpsubject");
                cassieText = cassieText.Replace("{scpnum}", $"{ev.ScpsLeft} SCP subject");
 
-            if (ev.ScpsLeft > 1)
-            {
-                cassieMessage = cassieMessage.Replace("scpsubject", "scpsubjects");
-                cassieText = cassieText.Replace("SCP subject", "SCP subjects");
-            }
+               if (ev.ScpsLeft > 1)
+               {
+                    cassieMessage = cassieMessage.Replace("scpsubject", "scpsubjects");
+                    cassieText = cassieText.Replace("SCP subject", "SCP subjects");
+               }
                cassieMessage = cassieMessage.Replace("{designation}", $"nato_{ev.UnitName[0]} {ev.UnitNumber}");
                cassieText = cassieText.Replace("{designation}", GetNatoName(ev.UnitName) + " " + ev.UnitNumber);
 
