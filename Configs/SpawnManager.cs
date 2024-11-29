@@ -22,8 +22,8 @@ namespace UIURescueSquad.Configs
         public string UiuAnnouncmentCassieNoScp { get; private set; } = "The U I U Squad designated {designation} HasEntered AllRemaining NoSCPsLeft";
 
         [Description("NTF entrance Cassie Message (leave empty to use default NTF cassie entrance)")]
-        public string NtfAnnouncementCassie { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AwaitingRecontainment {scpnum}";
-        public string NtfAnnouncmentCassieNoScp { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered NoSCPsLeft";
+        public string NtfAnnouncementCassie { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining AwaitingRecontainment {scpnum}";
+        public string NtfAnnouncmentCassieNoScp { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining NoSCPsLeft";
 
         [Description("Cassie Subtitles")]
         public bool Subtitles { get; private set; } = true;

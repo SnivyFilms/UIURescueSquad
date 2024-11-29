@@ -41,6 +41,12 @@ namespace UIURescueSquad
                     //To Do:
                     // Respawn System, Not Entirely Implemented Yet
                     
+                    if (Math.Round(
+                             Respawn.TryGetWaveBase(Respawn.NextKnownFaction,
+                                  out SpawnableWaveBase spawnableWaveBase) &&
+                             spawnableWaveBase is TimeBasedWave.Timer.TimeLeft, 0) !=
+                                    UIURescueSquad.Instance.Config.SpawnWaveCalculation))
+                    
                     //if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation)
                     //     continue;
 
