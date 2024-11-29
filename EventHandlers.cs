@@ -38,8 +38,11 @@ namespace UIURescueSquad
                     if (Round.IsEnded)
                          break;
 
-                    if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation)
-                         continue;
+                    //To Do:
+                    // Respawn System, Not Entirely Implemented Yet
+                    
+                    //if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation)
+                    //     continue;
 
                     if (Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox)
                          UIURescueSquad.Instance.IsSpawnable = (Loader.Random.Next(100) <= UIURescueSquad.Instance.Config.SpawnManager.Probability &&
@@ -80,7 +83,9 @@ namespace UIURescueSquad
                     }
                     UIURespawns++;
                     
-                    ev.NextKnownTeam = SpawnableTeamType.None;
+                    //To Do:
+                    //Next Known Team, Maybe I could get rid of this
+                    //ev.NextKnownTeam = SpawnableTeamType.None;
                }
                Respawns++;
           }
