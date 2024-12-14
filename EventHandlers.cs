@@ -7,6 +7,7 @@ using PlayerRoles;
 using Respawning;
 using System;
 using System.Collections.Generic;
+using Exiled.API.Enums;
 
 namespace UIURescueSquad
 {
@@ -41,14 +42,11 @@ namespace UIURescueSquad
                     //To Do:
                     // Respawn System, Not Entirely Implemented Yet
                     
-                    //if (Math.Round(
-                    //         Respawn.TryGetWaveBase(Respawn.NextKnownFaction,)
-                    //continue;
                     
-                    //if (Math.Round(Respawn.TimeUntilSpawnWave.TotalSeconds, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation)
-                    //     continue;
+                    //if (Math.Round(Respawn.Time.TotalSeconds, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation)
+                    //    continue;
 
-                    if (Respawn.NextKnownTeam == SpawnableTeamType.NineTailedFox)
+                    if (Respawn.NextKnownSpawnableFaction is SpawnableFaction.NtfWave or SpawnableFaction.NtfMiniWave)
                          UIURescueSquad.Instance.IsSpawnable = (Loader.Random.Next(100) <= UIURescueSquad.Instance.Config.SpawnManager.Probability &&
                              Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
                              UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns) || UIURescueSquad.Instance.NextIsForced;
