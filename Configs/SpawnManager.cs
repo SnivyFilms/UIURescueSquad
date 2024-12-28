@@ -40,5 +40,7 @@ namespace UIURescueSquad.Configs
         [Description("Cassie Text UIU No SCPs")]
         public string CassieTextUiuNoSCPs { get; private set; } = "The UIU Squad, designated {designation} has entered the facility. Substantial threat remains within the facility - exercise caution.";
 
+        [Description("Consume a MTF Wave when respawning? (False = MTF gets a spawn afterwords")]
+        public bool ConsumeMtfSpawnWave { get; set; } = false;
     }
 }
