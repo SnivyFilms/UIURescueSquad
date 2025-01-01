@@ -42,5 +42,8 @@ namespace UIURescueSquad.Configs
 
         [Description("Consume a MTF Wave when respawning? (False = MTF gets a spawn afterwords")]
         public bool ConsumeMtfSpawnWave { get; set; } = false;
+
+        [Description("Can UIU Spawn during a Mini-MTF Wave?")]
+        public bool UiuSpawnsDuringMiniWave { get; set; } = false;
     }
 }
