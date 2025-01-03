@@ -38,26 +38,27 @@ namespace UIURescueSquad
 
                     if (Round.IsEnded)
                          break;
-
-                    //To Do:
-                    // Respawn System, Not Entirely Implemented Yet
-                    
                     
                     //if (Math.Round(Respawn.Time.TotalSeconds, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation)
                     //    continue;
+                    
+                    if (Respawn.IsSpawning)
+                         continue;
 
                     if (Respawn.NextKnownSpawnableFaction is SpawnableFaction.NtfWave)
                     {
-                         UIURescueSquad.Instance.IsSpawnable = (Loader.Random.Next(100) <= UIURescueSquad.Instance.Config.SpawnManager.Probability &&
-                                                                Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
-                                                                UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns) || UIURescueSquad.Instance.NextIsForced;
+                         UIURescueSquad.Instance.IsSpawnable = 
+                              (Loader.Random.Next(100) <= UIURescueSquad.Instance.Config.SpawnManager.Probability &&
+                               Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
+                               UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns) || UIURescueSquad.Instance.NextIsForced;
                     }
                     else if (Respawn.NextKnownSpawnableFaction == SpawnableFaction.NtfMiniWave &&
                              UIURescueSquad.Instance.Config.SpawnManager.UiuSpawnsDuringMiniWave)
                     {
-                         UIURescueSquad.Instance.IsSpawnable = (Loader.Random.Next(100) <= UIURescueSquad.Instance.Config.SpawnManager.Probability && 
-                                                                Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
-                                                                UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns) || UIURescueSquad.Instance.NextIsForced;
+                         UIURescueSquad.Instance.IsSpawnable = 
+                              (Loader.Random.Next(100) <= UIURescueSquad.Instance.Config.SpawnManager.Probability && 
+                               Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
+                               UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns) || UIURescueSquad.Instance.NextIsForced;
                     }
                          
                }
