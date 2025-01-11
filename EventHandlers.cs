@@ -94,13 +94,8 @@ namespace UIURescueSquad
                                    break;
                          }
                     }
+
                     UIURespawns++;
-                    
-                    //To Do:
-                    //Next Known Team, Maybe I could get rid of this
-                    //ev.NextKnownTeam = SpawnableTeamType.None;
-                    if (!UIURescueSquad.Instance.Config.SpawnManager.ConsumeMtfSpawnWave)
-                         Respawn.GrantTokens(Faction.FoundationStaff, 1);
                }
                Respawns++;
           }
