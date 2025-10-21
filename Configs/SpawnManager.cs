@@ -17,11 +17,12 @@ namespace UIURescueSquad.Configs
         [Description("The maximum size of a UIU squad")]
         public int MaxSquad { get; private set; } = 8;
 
+        [Description("Set this to false if you dont want to have any custom Cassie messages")]
+        public bool UseCustomCassie { get; set; } = true;
+
         [Description("UIU entrance Cassie Message")]
         public string UiuAnnouncementCassie { get; private set; } = "The U I U Squad designated {designation} HasEntered AllRemaining AwaitingRecontainment {scpnum}";
         public string UiuAnnouncmentCassieNoScp { get; private set; } = "The U I U Squad designated {designation} HasEntered AllRemaining NoSCPsLeft";
-
-        [Description("NTF entrance Cassie Message (leave empty to use default NTF cassie entrance)")]
         public string NtfAnnouncementCassie { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining AwaitingRecontainment {scpnum}";
         public string NtfAnnouncmentCassieNoScp { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining NoSCPsLeft";
 

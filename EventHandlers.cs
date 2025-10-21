@@ -94,7 +94,6 @@ namespace UIURescueSquad
                                    break;
                          }
                     }
-
                     UIURespawns++;
                }
                Respawns++;
@@ -102,19 +101,21 @@ namespace UIURescueSquad
 
           public void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
           {
+               if (!UIURescueSquad.Instance.Config.SpawnManager.UseCustomCassie)
+                    return;
+               ev.IsAllowed = false;
+               Cassie.Clear();
                string cassieMessage = string.Empty;
                string cassieText = string.Empty;
                if (UIURescueSquad.Instance.IsSpawnable || UIURescueSquad.Instance.NextIsForced)
                {
                     if (ev.ScpsLeft == 0 && !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager.UiuAnnouncmentCassieNoScp))
                     {
-                         ev.IsAllowed = false;
                          cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.UiuAnnouncmentCassieNoScp;
                          cassieText = UIURescueSquad.Instance.Config.SpawnManager.CassieTextUiuNoSCPs;
                     }
                     else if (ev.ScpsLeft >= 1 && !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager.UiuAnnouncementCassie))
                     {
-                         ev.IsAllowed = false;
                          cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.UiuAnnouncementCassie;
                          cassieText = UIURescueSquad.Instance.Config.SpawnManager.CassieTextUiuSCPs;
                     }
@@ -125,13 +126,11 @@ namespace UIURescueSquad
                {
                     if (ev.ScpsLeft == 0 && !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncmentCassieNoScp))
                     {
-                         ev.IsAllowed = false;
                          cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncmentCassieNoScp;
                          cassieText = UIURescueSquad.Instance.Config.SpawnManager.CassieTextMtfNoSCPs;
                     }
                     else if (ev.ScpsLeft >= 1 && !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncementCassie))
                     {
-                         ev.IsAllowed = false;
                          cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncementCassie;
                          cassieText = UIURescueSquad.Instance.Config.SpawnManager.CassieTextMtfSCPs;
                     }
