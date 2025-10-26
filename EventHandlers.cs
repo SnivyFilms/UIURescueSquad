@@ -124,15 +124,41 @@ namespace UIURescueSquad
                }
                else
                {
-                    if (ev.ScpsLeft == 0 && !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncmentCassieNoScp))
+                    if (ev.Wave.IsMiniWave)
                     {
-                         cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncmentCassieNoScp;
-                         cassieText = UIURescueSquad.Instance.Config.SpawnManager.CassieTextMtfNoSCPs;
+                         switch (ev.ScpsLeft)
+                         {
+                              case 0 when
+                                   !string.IsNullOrEmpty(
+                                        UIURescueSquad.Instance.Config.SpawnManager.NtfMiniAnnouncmentCassieNoScp):
+                                   cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.NtfMiniAnnouncmentCassieNoScp;
+                                   cassieText = UIURescueSquad.Instance.Config.SpawnManager.CassieTextMiniMtfNoSCPs;
+                                   break;
+                              case >= 1 when
+                                   !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager
+                                        .NtfMiniAnnouncementCassie):
+                                   cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.NtfMiniAnnouncementCassie;
+                                   cassieText = UIURescueSquad.Instance.Config.SpawnManager.CassieTextMiniMtfSCPs;
+                                   break;
+                         }
                     }
-                    else if (ev.ScpsLeft >= 1 && !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncementCassie))
+                    else
                     {
-                         cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.NtfAnnouncementCassie;
-                         cassieText = UIURescueSquad.Instance.Config.SpawnManager.CassieTextMtfSCPs;
+                         switch (ev.ScpsLeft)
+                         {
+                              case 0 when
+                                   !string.IsNullOrEmpty(
+                                        UIURescueSquad.Instance.Config.SpawnManager.NtfMiniAnnouncmentCassieNoScp):
+                                   cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.NtfMiniAnnouncmentCassieNoScp;
+                                   cassieText = UIURescueSquad.Instance.Config.SpawnManager.CassieTextMiniMtfNoSCPs;
+                                   break;
+                              case >= 1 when
+                                   !string.IsNullOrEmpty(UIURescueSquad.Instance.Config.SpawnManager
+                                        .NtfMiniAnnouncementCassie):
+                                   cassieMessage = UIURescueSquad.Instance.Config.SpawnManager.NtfMiniAnnouncementCassie;
+                                   cassieText = UIURescueSquad.Instance.Config.SpawnManager.CassieTextMiniMtfSCPs;
+                                   break;
+                         }
                     }
                }
 

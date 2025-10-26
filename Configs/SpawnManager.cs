@@ -25,15 +25,22 @@ namespace UIURescueSquad.Configs
         public string UiuAnnouncmentCassieNoScp { get; private set; } = "The U I U Squad designated {designation} HasEntered AllRemaining NoSCPsLeft";
         public string NtfAnnouncementCassie { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining AwaitingRecontainment {scpnum}";
         public string NtfAnnouncmentCassieNoScp { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining NoSCPsLeft";
+        public string NtfMiniAnnouncementCassie { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining AwaitingRecontainment {scpnum}";
+        public string NtfMiniAnnouncmentCassieNoScp { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining NoSCPsLeft";
 
         [Description("Cassie Subtitles")]
         public bool Subtitles { get; private set; } = true;
 
         [Description("Cassie Text MTF SCPs")]
-        public string CassieTextMtfSCPs { get; private set; } = "Mobile Task Force Unit Espilon 11, designated {designation} has entered the facility. All remaining personnel are advised to proceed with standard evaction protocols until a MTF squad reaches your destination. awaiting recontainment of {scpnum}.";
+        public string CassieTextMtfSCPs { get; private set; } = "Mobile Task Force Unit Epsilon 11, designated {designation} has entered the facility. All remaining personnel are advised to proceed with standard evaction protocols until a MTF squad reaches your destination. awaiting recontainment of {scpnum}.";
 
         [Description("Cassie Text MTF No SCPs")]
-        public string CassieTextMtfNoSCPs { get; private set; } = "Mobile Task Force Unit Espilon 11, designated {designation} has entered the facility. All remaining personnel are advised to proceed with standard evaction protocols until a MTF squad reaches your destination. Substantial threat remains within the facility - exercise caution.";
+        public string CassieTextMtfNoSCPs { get; private set; } = "Mobile Task Force Unit Epsilon 11, designated {designation} has entered the facility. All remaining personnel are advised to proceed with standard evaction protocols until a MTF squad reaches your destination. Substantial threat remains within the facility - exercise caution.";
+        [Description("Cassie Text MTF SCPs")]
+        public string CassieTextMiniMtfSCPs { get; private set; } = "Mobile Task Force Unit Epsilon 11, designated {designation} has entered the facility. All remaining personnel are advised to proceed with standard evaction protocols until a MTF squad reaches your destination. awaiting recontainment of {scpnum}.";
+
+        [Description("Cassie Text MTF No SCPs")]
+        public string CassieTextMiniMtfNoSCPs { get; private set; } = "Mobile Task Force Unit Epsilon 11, designated {designation} has entered the facility. All remaining personnel are advised to proceed with standard evaction protocols until a MTF squad reaches your destination. Substantial threat remains within the facility - exercise caution.";
 
         [Description("Cassie Text UIU SCPs")]
         public string CassieTextUiuSCPs { get; private set; } = "The UIU Squad, designated {designation} has entered the facility. Awaiting recontainment of {scpnum}";
