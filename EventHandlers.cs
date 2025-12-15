@@ -1,10 +1,10 @@
-﻿using Exiled.API.Features;
+﻿using System.Collections.Generic;
+using Exiled.API.Features;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Server;
 using Exiled.Loader;
 using MEC;
 using PlayerRoles;
-using System.Collections.Generic;
 using Exiled.API.Enums;
 
 namespace UIURescueSquad
@@ -72,8 +72,7 @@ namespace UIURescueSquad
                     else
                          players = ev.Players.GetRange(0, ev.Players.Count);
 
-                    Queue<RoleTypeId> queue = ev.SpawnQueue;
-                    foreach (RoleTypeId role in queue)
+                    foreach (RoleTypeId role in ev.SpawnQueue)
                     {
                          if (players.Count <= 0)
                               break;
