@@ -66,29 +66,29 @@ namespace UIURescueSquad
           {
                if (UIURescueSquad.Instance.IsSpawnable || UIURescueSquad.Instance.NextIsForced)
                {
-                    List<Player> players = new List<Player>();
-                    if (ev.Players.Count > UIURescueSquad.Instance.Config.SpawnManager.MaxSquad)
-                         players = ev.Players.GetRange(0, UIURescueSquad.Instance.Config.SpawnManager.MaxSquad);
-                    else
-                         players = ev.Players.GetRange(0, ev.Players.Count);
-
-                    foreach (RoleTypeId role in ev.SpawnQueue)
+                    List<Player> players = ev.Players.GetRange(0, ev.Players.Count >  UIURescueSquad.Instance.Config.SpawnManager.MaxSquad 
+                         ?  UIURescueSquad.Instance.Config.SpawnManager.MaxSquad 
+                         : ev.Players.Count);
+                    
+                    int uiuSpawnCount = 0;
+                    foreach (Player player in players)
                     {
-                         if (players.Count <= 0)
-                              break;
-                         Player player = players.RandomItem();
-                         players.Remove(player);
-                         switch (role)
+                         if (player is null)
+                              continue;
+
+                         if (uiuSpawnCount == 0)
                          {
-                              case RoleTypeId.NtfCaptain:
-                                   UIURescueSquad.Instance.Config.UiuLeader.AddRole(player);
-                                   break;
-                              case RoleTypeId.NtfSergeant:
-                                   UIURescueSquad.Instance.Config.UiuAgent.AddRole(player);
-                                   break;
-                              case RoleTypeId.NtfPrivate:
-                                   UIURescueSquad.Instance.Config.UiuSoldier.AddRole(player);
-                                   break;
+                              UIURescueSquad.Instance.Config.UiuLeader.AddRole(player);
+                              uiuSpawnCount++;
+                         }
+                         else if (uiuSpawnCount >= 1 && uiuSpawnCount <= 3)
+                         {
+                              UIURescueSquad.Instance.Config.UiuAgent.AddRole(player);
+                              uiuSpawnCount++;
+                         }
+                         else
+                         {
+                              UIURescueSquad.Instance.Config.UiuSoldier.AddRole(player);
                          }
                     }
                     UIURespawns++;
@@ -173,7 +173,7 @@ namespace UIURescueSquad
                cassieText = cassieText.Replace("{designation}", GetNatoName(ev.UnitName) + " " + ev.UnitNumber);
 
                if (!string.IsNullOrEmpty(cassieMessage))
-                    Exiled.API.Features.Cassie.MessageTranslated(cassieMessage, cassieText, isSubtitles: UIURescueSquad.Instance.Config.SpawnManager.Subtitles);
+                    LabApi.Features.Wrappers.Cassie.Message(cassieMessage, cassieText);
           }
         public string GetNatoName(string unitName)
         {

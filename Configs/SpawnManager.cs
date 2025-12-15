@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 
 namespace UIURescueSquad.Configs
 { 
@@ -27,9 +28,6 @@ namespace UIURescueSquad.Configs
         public string NtfAnnouncmentCassieNoScp { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining NoSCPsLeft";
         public string NtfMiniAnnouncementCassie { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining AwaitingRecontainment {scpnum}";
         public string NtfMiniAnnouncmentCassieNoScp { get; private set; } = "MTFUnit epsilon 11 designated {designation} hasentered AllRemaining NoSCPsLeft";
-
-        [Description("Cassie Subtitles")]
-        public bool Subtitles { get; private set; } = true;
 
         [Description("Cassie Text MTF SCPs")]
         public string CassieTextMtfSCPs { get; private set; } = "Mobile Task Force Unit Epsilon 11, designated {designation} has entered the facility. All remaining personnel are advised to proceed with standard evaction protocols until a MTF squad reaches your destination. awaiting recontainment of {scpnum}.";
