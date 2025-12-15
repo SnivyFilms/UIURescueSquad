@@ -101,6 +101,8 @@ namespace UIURescueSquad
 
           public void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
           {
+               if (ev.Wave == null)
+                    return;
                if (!UIURescueSquad.Instance.Config.SpawnManager.UseCustomCassie)
                     return;
                ev.IsAllowed = false;
