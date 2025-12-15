@@ -4,8 +4,6 @@ using Exiled.Events.EventArgs.Server;
 using Exiled.Loader;
 using MEC;
 using PlayerRoles;
-using Respawning;
-using System;
 using System.Collections.Generic;
 using Exiled.API.Enums;
 
@@ -106,7 +104,7 @@ namespace UIURescueSquad
                if (!UIURescueSquad.Instance.Config.SpawnManager.UseCustomCassie)
                     return;
                ev.IsAllowed = false;
-               Cassie.Clear();
+               Exiled.API.Features.Cassie.Clear();
                string cassieMessage = string.Empty;
                string cassieText = string.Empty;
                if (UIURescueSquad.Instance.IsSpawnable || UIURescueSquad.Instance.NextIsForced)
@@ -176,7 +174,7 @@ namespace UIURescueSquad
                cassieText = cassieText.Replace("{designation}", GetNatoName(ev.UnitName) + " " + ev.UnitNumber);
 
                if (!string.IsNullOrEmpty(cassieMessage))
-                    Cassie.MessageTranslated(cassieMessage, cassieText, isSubtitles: UIURescueSquad.Instance.Config.SpawnManager.Subtitles);
+                    Exiled.API.Features.Cassie.MessageTranslated(cassieMessage, cassieText, isSubtitles: UIURescueSquad.Instance.Config.SpawnManager.Subtitles);
           }
         public string GetNatoName(string unitName)
         {
