@@ -169,10 +169,14 @@ namespace UIURescueSquad
                     cassieMessage = cassieMessage.Replace("scpsubject", "scpsubjects");
                     cassieText = cassieText.Replace("SCP subject", "SCP subjects");
                }
-               cassieMessage = cassieMessage.Replace("{designation}", $"nato_{ev.UnitName[0]} {ev.UnitNumber}");
-               cassieText = cassieText.Replace("{designation}", GetNatoName(ev.UnitName) + " " + ev.UnitNumber);
 
-               if (!string.IsNullOrEmpty(cassieMessage))
+               if (ev.UnitName != null)
+               {
+                    cassieMessage = cassieMessage.Replace("{designation}", $"nato_{ev.UnitName[0]} {ev.UnitNumber}");
+                    cassieText = cassieText.Replace("{designation}", GetNatoName(ev.UnitName) + " " + ev.UnitNumber);
+               }
+
+               if (!string.IsNullOrWhiteSpace(cassieMessage))
                     LabApi.Features.Wrappers.Cassie.Message(cassieMessage, cassieText);
           }
         public string GetNatoName(string unitName)
