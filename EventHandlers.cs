@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Exiled.API.Features;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Server;
@@ -6,6 +7,10 @@ using Exiled.Loader;
 using MEC;
 using PlayerRoles;
 using Exiled.API.Enums;
+using LabApi.Features.Wrappers;
+using LabApi.Loader.Features.Plugins;
+using Player = Exiled.API.Features.Player;
+using Round = Exiled.API.Features.Round;
 
 namespace UIURescueSquad
 {
@@ -36,29 +41,22 @@ namespace UIURescueSquad
 
                     if (Round.IsEnded)
                          break;
-                    
-                    //if (Math.Round(Respawn.Time.TotalSeconds, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation)
-                    //    continue;
-                    
-                    if (Respawn.IsSpawning)
+
+                    if (RespawnWaves.PrimaryMtfWave != null && Math.Round(RespawnWaves.PrimaryMtfWave.Base.Timer.TimeLeft, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation 
+                        || UIURescueSquad.Instance.Config.SpawnManager.UiuSpawnsDuringMiniWave && RespawnWaves.MiniMtfWave != null && Math.Round(RespawnWaves.MiniMtfWave.Base.Timer.TimeLeft, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation)
                          continue;
 
-                    if (Respawn.NextKnownSpawnableFaction is SpawnableFaction.NtfWave)
+                    if (Respawn.IsSpawning)
+                         continue;
+				
+                    if ((Respawn.NextKnownSpawnableFaction == SpawnableFaction.NtfMiniWave&&
+                         UIURescueSquad.Instance.Config.SpawnManager.UiuSpawnsDuringMiniWave) || Respawn.NextKnownSpawnableFaction == SpawnableFaction.NtfWave)
                     {
-                         UIURescueSquad.Instance.IsSpawnable = 
-                              (Loader.Random.Next(100) <= UIURescueSquad.Instance.Config.SpawnManager.Probability &&
-                               Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
-                               UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns) || UIURescueSquad.Instance.NextIsForced;
+                         UIURescueSquad.Instance.IsSpawnable = Loader.Random.Next(101) <= UIURescueSquad.Instance.Config.SpawnManager.Probability &&
+                              Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
+                              UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns || UIURescueSquad.Instance.NextIsForced;
                     }
-                    else if (Respawn.NextKnownSpawnableFaction == SpawnableFaction.NtfMiniWave &&
-                             UIURescueSquad.Instance.Config.SpawnManager.UiuSpawnsDuringMiniWave)
-                    {
-                         UIURescueSquad.Instance.IsSpawnable = 
-                              (Loader.Random.Next(100) <= UIURescueSquad.Instance.Config.SpawnManager.Probability && 
-                               Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
-                               UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns) || UIURescueSquad.Instance.NextIsForced;
-                    }
-                         
+					
                }
           }
 
@@ -177,7 +175,7 @@ namespace UIURescueSquad
                }
 
                if (!string.IsNullOrWhiteSpace(cassieMessage))
-                    LabApi.Features.Wrappers.Cassie.Message(cassieMessage, cassieText);
+                    LabApi.Features.Wrappers.Announcer.Message(cassieMessage, cassieText);
           }
         public string GetNatoName(string unitName)
         {
