@@ -14,8 +14,8 @@ namespace UIURescueSquad
           public override string Name { get; } = "UIURescueSquad";
           public override string Author { get; } = "JesusQC, Michal78900, Marco15453, Vicious Vikki, & Misfiy";
           public override string Prefix { get; } = "UIURescueSquad";
-          public override Version Version { get; } = new Version(6, 0, 8);
-          public override Version RequiredExiledVersion => new Version(9, 13, 3);
+          public override Version Version { get; } = new Version(6, 0, 9);
+          public override Version RequiredExiledVersion => new Version(9, 15, 2);
           
           public static UIURescueSquad Instance;
 
@@ -35,6 +35,7 @@ namespace UIURescueSquad
 
                ServerEvent.RoundStarted += eventHandlers.OnRoundStarted;
                ServerEvent.RespawningTeam += eventHandlers.OnRespawningTeam;
+               ServerEvent.RespawnedTeam += eventHandlers.OnWaveSpawned;
                MapEvent.AnnouncingNtfEntrance += eventHandlers.OnAnnouncingNtfEntrance;
 
                base.OnEnabled();
@@ -46,6 +47,7 @@ namespace UIURescueSquad
 
                ServerEvent.RoundStarted -= eventHandlers.OnRoundStarted;
                ServerEvent.RespawningTeam -= eventHandlers.OnRespawningTeam;
+               ServerEvent.RespawnedTeam -= eventHandlers.OnWaveSpawned;
                MapEvent.AnnouncingNtfEntrance -= eventHandlers.OnAnnouncingNtfEntrance;
 
                eventHandlers = null;

@@ -27,13 +27,13 @@ namespace UIURescueSquad
                Respawns = 0;
                UIURespawns = 0;
 
-               if (calcuationCoroutine.IsRunning)
+               /*if (calcuationCoroutine.IsRunning)
                     Timing.KillCoroutines(calcuationCoroutine);
 
-               calcuationCoroutine = Timing.RunCoroutine(spawnCalculation());
+               calcuationCoroutine = Timing.RunCoroutine(spawnCalculation());*/
           }
 
-          private IEnumerator<float> spawnCalculation()
+          /*private IEnumerator<float> spawnCalculation()
           {
                while (true)
                {
@@ -58,12 +58,21 @@ namespace UIURescueSquad
                     }
 					
                }
-          }
+          }*/
 
           public void OnRespawningTeam(RespawningTeamEventArgs ev)
           {
-               if (UIURescueSquad.Instance.IsSpawnable || UIURescueSquad.Instance.NextIsForced)
+               //if (UIURescueSquad.Instance.IsSpawnable || UIURescueSquad.Instance.NextIsForced)
+               if (ev.Wave.Faction == Faction.FoundationStaff)
                {
+                    if (UIURescueSquad.Instance.Config.SpawnManager.Respawns > Respawns ||
+                        UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns <= UIURespawns)
+                         return;
+                    if (UIURescueSquad.Instance.Config.SpawnManager.Probability < Loader.Random.Next(101) && !UIURescueSquad.Instance.NextIsForced)
+                         return;
+                    if (ev.Wave.IsMiniWave && !UIURescueSquad.Instance.Config.SpawnManager.UiuSpawnsDuringMiniWave)
+                         return;
+                    UIURescueSquad.Instance.IsSpawnable = true;
                     List<Player> players = ev.Players.GetRange(0, ev.Players.Count >  UIURescueSquad.Instance.Config.SpawnManager.MaxSquad 
                          ?  UIURescueSquad.Instance.Config.SpawnManager.MaxSquad 
                          : ev.Players.Count);
@@ -94,6 +103,12 @@ namespace UIURescueSquad
                Respawns++;
           }
 
+          public void OnWaveSpawned(RespawnedTeamEventArgs ev)
+          {
+               if (UIURescueSquad.Instance.IsSpawnable)
+                    UIURescueSquad.Instance.IsSpawnable = false;
+          }
+          
           public void OnAnnouncingNtfEntrance(AnnouncingNtfEntranceEventArgs ev)
           {
                if (ev.Wave == null)
