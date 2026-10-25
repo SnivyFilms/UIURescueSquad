@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using Exiled.API.Features;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Exiled.Events.EventArgs.Map;
 using Exiled.Events.EventArgs.Server;
 using Exiled.Loader;
 using MEC;
 using PlayerRoles;
-using Exiled.API.Enums;
-using LabApi.Features.Wrappers;
-using LabApi.Loader.Features.Plugins;
 using Player = Exiled.API.Features.Player;
-using Round = Exiled.API.Features.Round;
 
 namespace UIURescueSquad
 {
@@ -26,79 +21,53 @@ namespace UIURescueSquad
                UIURescueSquad.Instance.NextIsForced = false;
                Respawns = 0;
                UIURespawns = 0;
-
-               /*if (calcuationCoroutine.IsRunning)
-                    Timing.KillCoroutines(calcuationCoroutine);
-
-               calcuationCoroutine = Timing.RunCoroutine(spawnCalculation());*/
           }
-
-          /*private IEnumerator<float> spawnCalculation()
-          {
-               while (true)
-               {
-                    yield return Timing.WaitForSeconds(1f);
-
-                    if (Round.IsEnded)
-                         break;
-
-                    if (RespawnWaves.PrimaryMtfWave != null && Math.Round(RespawnWaves.PrimaryMtfWave.Base.Timer.TimeLeft, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation 
-                        || UIURescueSquad.Instance.Config.SpawnManager.UiuSpawnsDuringMiniWave && RespawnWaves.MiniMtfWave != null && Math.Round(RespawnWaves.MiniMtfWave.Base.Timer.TimeLeft, 0) != UIURescueSquad.Instance.Config.SpawnWaveCalculation)
-                         continue;
-
-                    if (Respawn.IsSpawning)
-                         continue;
-				
-                    if ((Respawn.NextKnownSpawnableFaction == SpawnableFaction.NtfMiniWave&&
-                         UIURescueSquad.Instance.Config.SpawnManager.UiuSpawnsDuringMiniWave) || Respawn.NextKnownSpawnableFaction == SpawnableFaction.NtfWave)
-                    {
-                         UIURescueSquad.Instance.IsSpawnable = Loader.Random.Next(101) <= UIURescueSquad.Instance.Config.SpawnManager.Probability &&
-                              Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
-                              UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns || UIURescueSquad.Instance.NextIsForced;
-                    }
-					
-               }
-          }*/
 
           public void OnRespawningTeam(RespawningTeamEventArgs ev)
           {
-               //if (UIURescueSquad.Instance.IsSpawnable || UIURescueSquad.Instance.NextIsForced)
                if (ev.Wave.Faction == Faction.FoundationStaff)
                {
-                    if (UIURescueSquad.Instance.Config.SpawnManager.Respawns > Respawns ||
-                        UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns <= UIURespawns)
-                         return;
-                    if (UIURescueSquad.Instance.Config.SpawnManager.Probability < Loader.Random.Next(101) && !UIURescueSquad.Instance.NextIsForced)
-                         return;
-                    if (ev.Wave.IsMiniWave && !UIURescueSquad.Instance.Config.SpawnManager.UiuSpawnsDuringMiniWave)
-                         return;
-                    UIURescueSquad.Instance.IsSpawnable = true;
-                    List<Player> players = ev.Players.GetRange(0, ev.Players.Count >  UIURescueSquad.Instance.Config.SpawnManager.MaxSquad 
-                         ?  UIURescueSquad.Instance.Config.SpawnManager.MaxSquad 
-                         : ev.Players.Count);
-                    
-                    int uiuSpawnCount = 0;
-                    foreach (Player player in players)
-                    {
-                         if (player is null)
-                              continue;
 
-                         if (uiuSpawnCount == 0)
+                    bool forced = UIURescueSquad.Instance.NextIsForced;
+                    bool miniWaveBlocked = ev.Wave.IsMiniWave &&
+                                           !UIURescueSquad.Instance.Config.SpawnManager.UiuSpawnsDuringMiniWave;
+                    bool conditionsMet = !forced &
+                                         Respawns >= UIURescueSquad.Instance.Config.SpawnManager.Respawns &&
+                                         UIURespawns < UIURescueSquad.Instance.Config.SpawnManager.MaxSpawns &&
+                                         Loader.Random.Next(101) <
+                                         UIURescueSquad.Instance.Config.SpawnManager.Probability;
+
+                    if (!forced && !conditionsMet)
+                         return;
+
+                    Respawns++;
+                    UIURescueSquad.Instance.IsSpawnable = true;
+                    List<Player> players = ev.Players.GetRange(0, ev.Players.Count >  UIURescueSquad.Instance.Config.SpawnManager.MaxSquad
+                         ?  UIURescueSquad.Instance.Config.SpawnManager.MaxSquad
+                         : ev.Players.Count);
+
+                    int uiuSpawnCount = 0;
+                    foreach (var player in players.Where(player => player is not null))
+                    {
+                         switch (uiuSpawnCount)
                          {
-                              UIURescueSquad.Instance.Config.UiuLeader.AddRole(player);
-                              uiuSpawnCount++;
-                         }
-                         else if (uiuSpawnCount >= 1 && uiuSpawnCount <= 3)
-                         {
-                              UIURescueSquad.Instance.Config.UiuAgent.AddRole(player);
-                              uiuSpawnCount++;
-                         }
-                         else
-                         {
-                              UIURescueSquad.Instance.Config.UiuSoldier.AddRole(player);
+                              case 0:
+                                   UIURescueSquad.Instance.Config.UiuLeader.AddRole(player);
+                                   uiuSpawnCount++;
+                                   break;
+                              case >= 1 and <= 3:
+                                   UIURescueSquad.Instance.Config.UiuAgent.AddRole(player);
+                                   uiuSpawnCount++;
+                                   break;
+                              default:
+                                   UIURescueSquad.Instance.Config.UiuSoldier.AddRole(player);
+                                   break;
                          }
                     }
                     UIURespawns++;
+                    UIURescueSquad.Instance.IsSpawnable = false;
+                    UIURescueSquad.Instance.NextIsForced = false;
+                    ev.IsAllowed = false;
                }
                Respawns++;
           }

@@ -14,7 +14,7 @@ namespace UIURescueSquad
           public override string Name { get; } = "UIURescueSquad";
           public override string Author { get; } = "JesusQC, Michal78900, Marco15453, Vicious Vikki, & Misfiy";
           public override string Prefix { get; } = "UIURescueSquad";
-          public override Version Version { get; } = new Version(6, 0, 9);
+          public override Version Version { get; } = new Version(6, 0, 10);
           public override Version RequiredExiledVersion => new Version(9, 15, 2);
           
           public static UIURescueSquad Instance;
